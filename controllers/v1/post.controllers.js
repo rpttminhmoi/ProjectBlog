@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('../../db');
 
 exports.getAllPosts = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
