@@ -1,0 +1,36 @@
+{
+  "name": "projectblog",
+  "version": "1.0.0",
+  "description": "��",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpttminhmoi/ProjectBlog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpttminhmoi/ProjectBlog/issues"
+  },
+  "homepage": "https://github.com/rpttminhmoi/ProjectBlog#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "pg-promise": "^11.15.0"
+  },
+  "devDependencies": {
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
