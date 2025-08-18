@@ -45,18 +45,19 @@ exports.getPostById = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   const { title, content, username } = req.body;
+  const userId = req.user.userId; // Lấy từ JWT
+
   if (!title || !content || !username) {
     return res.status(400).json({ error: 'Missing fields' });
   }
 
   try {
     const newPost = await db.one(
-      'INSERT INTO posts(title, content, username, created_at) VALUES($1, $2, $3, NOW()) RETURNING *',
-      [title, content, username]
+      'INSERT INTO posts (title, content, username, user_id, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
+      [title, content, username, userId]
     );
     res.status(201).json(newPost);
-  } 
-  catch (err) {
+  } catch (err) {
     console.error('❌ CREATE POST ERROR:', err.message);
     res.status(500).json({ error: 'Failed to create post' });
   }
