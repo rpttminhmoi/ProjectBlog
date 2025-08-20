@@ -45,9 +45,10 @@ exports.getPostById = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   const { title, content, username } = req.body;
-  const userId = req.user.userId; // Lấy từ JWT
+  const userId = req.user?.id || null; 
+  //const userId = req.user?.id; 
 
-  if (!title || !content || !username) {
+  if (!title || !content || !username || !userId) {
     return res.status(400).json({ error: 'Missing fields' });
   }
 
