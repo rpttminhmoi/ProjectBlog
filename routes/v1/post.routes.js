@@ -1,20 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const postController = require('../controllers/v1/post.controllers');
+const postController = require('../../controllers/v1/post.controller.js');
+const authMiddleware = require('../../middlewares/auth.middleware.js');
+const validatePostCreate = require('../../middlewares/validatePostCreate.js');
+const validatePostUpdate = require('../../middlewares/validatePostUpdate.js');
 
-// GET all posts
+// POST create a new post (JWT + validate)
+router.post('/', authMiddleware, validatePostCreate, postController.createPost);
+
+// PUT update post by ID (JWT + validate)
+router.put('/:id', authMiddleware, validatePostUpdate, postController.updatePost);
+
+// GET all posts (không cần auth)
 router.get('/', postController.getAllPosts);
 
-// GET post by ID
+// GET post by ID (không cần auth)
 router.get('/:id', postController.getPostById);
 
-// POST create a post
-router.post('/', postController.createPost);
-
-// PUT update post
-router.put('/:id', postController.updatePost);
-
-// DELETE post
-router.delete('/:id', postController.deletePost);
+// DELETE post (có auth)
+router.delete('/:id', authMiddleware, postController.deletePost);
 
 module.exports = router;

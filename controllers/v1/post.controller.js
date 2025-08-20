@@ -7,7 +7,7 @@ exports.getAllPosts = async (req, res) => {
   
     try {
       const posts = await db.any(
-        'SELECT * FROM posts ORDER BY createdAt DESC LIMIT $1 OFFSET $2',
+        'SELECT * FROM posts ORDER BY created_at DESC LIMIT $1 OFFSET $2',
         [limit, offset]
       );
   
@@ -45,18 +45,20 @@ exports.getPostById = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   const { title, content, username } = req.body;
-  if (!title || !content || !username) {
+  const userId = req.user?.id || null; 
+  //const userId = req.user?.id; 
+
+  if (!title || !content || !username || !userId) {
     return res.status(400).json({ error: 'Missing fields' });
   }
 
   try {
     const newPost = await db.one(
-      'INSERT INTO posts(title, content, username, created_at) VALUES($1, $2, $3, NOW()) RETURNING *',
-      [title, content, username]
+      'INSERT INTO posts (title, content, username, user_id, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
+      [title, content, username, userId]
     );
     res.status(201).json(newPost);
-  } 
-  catch (err) {
+  } catch (err) {
     console.error('❌ CREATE POST ERROR:', err.message);
     res.status(500).json({ error: 'Failed to create post' });
   }

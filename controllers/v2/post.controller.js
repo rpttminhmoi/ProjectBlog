@@ -7,7 +7,7 @@ exports.getAllPosts = async (req, res) => {
   
     try {
       const posts = await db.any(
-        'SELECT * FROM posts ORDER BY createdAt DESC LIMIT $1 OFFSET $2',
+        'SELECT * FROM posts ORDER BY created_at DESC LIMIT $1 OFFSET $2',
         [limit, offset]
       );
   
