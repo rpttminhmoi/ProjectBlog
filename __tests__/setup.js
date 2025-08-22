@@ -1,11 +1,4 @@
-// Mock the database module
-jest.mock('../db', () => ({
-  any: jest.fn(),
-  one: jest.fn(),
-  oneOrNone: jest.fn(),
-  result: jest.fn(),
-  none: jest.fn()
-}));
+
 // Mock the database module
 jest.mock('../db', () => ({
   any: jest.fn(),
