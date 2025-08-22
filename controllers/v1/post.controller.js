@@ -44,19 +44,22 @@ exports.getPostById = async (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
-  const { title, content, username } = req.body;
-  const userId = req.user?.id || null; 
-  //const userId = req.user?.id; 
-
-  if (!title || !content || !username || !userId) {
-    return res.status(400).json({ error: 'Missing fields' });
-  }
-
   try {
+    const { title, content } = req.body;
+    const userId = req.user?.id;
+
+    if (!title || !content) {
+      return res.status(400).json({ error: 'Missing fields' });
+    }
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const newPost = await db.one(
-      'INSERT INTO posts (title, content, username, user_id, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
-      [title, content, username, userId]
+      'INSERT INTO posts(title, content, user_id) VALUES($1, $2, $3) RETURNING *',
+      [title, content, userId]
     );
+
     res.status(201).json(newPost);
   } catch (err) {
     console.error('❌ CREATE POST ERROR:', err.message);

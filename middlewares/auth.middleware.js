@@ -1,18 +1,31 @@
 const jwt = require('jsonwebtoken');
+const db = require('../db');
 
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // "Bearer token"
-
-  if (!token) return res.status(401).json({ error: 'No token provided' });
-
+module.exports = async (req, res, next) => {
   try {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'Invalid token format' });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Gắn user info vào req để dùng sau
+
+    // Lấy thông tin user từ DB
+    const user = await db.oneOrNone('SELECT id, username FROM users WHERE id = $1', [decoded.id]);
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    // Gắn user vào req
+    req.user = user;
     next();
   } catch (err) {
-    return res.status(403).json({ error: 'Invalid token' });
+    console.error('❌ AUTH ERROR:', err.message);
+    res.status(401).json({ error: 'Unauthorized' });
   }
 };
-
-module.exports = authMiddleware;
