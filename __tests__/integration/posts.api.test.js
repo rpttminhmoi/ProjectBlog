@@ -46,12 +46,44 @@ describe('Posts API', () => {
       .send({ 
         title: 'Test', 
         content: 'Content',
-        username: 'testuser' // Add this if your validation requires it
+        username: 'testuser' 
       })
       .expect('Content-Type', /json/)
-      .expect(201); // This should now pass
+      .expect(201); 
 
     expect(response.body).toEqual(mockPost);
     });
   });
+  /*
+  describe('Protected Routes', () => {
+    it('should reject unauthenticated requests to protected routes', async () => {
+      // Create a fresh app instance without the auth mock
+      const express = require('express');
+      const freshApp = express();
+      freshApp.use(express.json());
+      
+      // Re-require the routes without the mock
+      jest.unmock('../../middlewares/auth.middleware');
+      const postRoutes = require('../../routes/v1/post.routes');
+      freshApp.use('/api/v1/posts', postRoutes);
+      
+      const response = await request(freshApp)
+        .post('/api/v1/posts')
+        .send({ 
+          title: 'Test', 
+          content: 'Content',
+          username: 'testuser'
+        });
+
+      expect(response.statusCode).toBe(401);
+      expect(response.body.error).toBe('No token provided');
+      
+      // Restore the mock
+      jest.mock('../../middlewares/auth.middleware', () => (req, res, next) => {
+        req.user = { id: 1, username: 'testuser' };
+        next();
+      });
+    });
+  });
+  */
 });

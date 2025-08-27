@@ -69,6 +69,27 @@ describe('Post Controller', () => {
       expect(mockRes.json).toHaveBeenCalledWith(mockPost);
     });
   });
+  describe('Error Cases', () => {
+    it('should handle database errors when creating post', async () => {
+      db.one.mockRejectedValue(new Error('Database error'));
+      
+      mockReq.body = { title: 'Test', content: 'Content' };
+      
+      await createPost(mockReq, mockRes);
+      
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Failed to create post' });
+    });
 
-  // Add similar tests for other methods
+    it('should return 404 when post not found', async () => {
+      db.oneOrNone.mockResolvedValue(null);
+      
+      mockReq.params = { id: 999 };
+      
+      await getPostById(mockReq, mockRes);
+      
+      expect(mockRes.status).toHaveBeenCalledWith(404);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Post not found' });
+    });
+  });
 });

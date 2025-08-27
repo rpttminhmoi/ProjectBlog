@@ -10,7 +10,11 @@
     "test:unit": "jest --testPathPattern=__tests__/unit --detectOpenHandles --forceExit",
     "test:integration": "jest --testPathPattern=__tests__/integration --detectOpenHandles --forceExit",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --detectOpenHandles --forceExit"
+    "test:coverage": "jest --coverage --detectOpenHandles --forceExit",
+    "test:ci": "jest --coverage --detectOpenHandles --forceExit",
+    "test:verbose": "jest --verbose",
+    "test:auth": "jest --testPathPattern=auth",
+    "test:posts": "jest --testPathPattern=posts"
   },
   "repository": {
     "type": "git",

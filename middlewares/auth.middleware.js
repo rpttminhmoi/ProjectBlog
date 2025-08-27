@@ -15,13 +15,11 @@ module.exports = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Lấy thông tin user từ DB
     const user = await db.oneOrNone('SELECT id, username FROM users WHERE id = $1', [decoded.id]);
     if (!user) {
       return res.status(401).json({ error: 'User not found' });
     }
 
-    // Gắn user vào req
     req.user = user;
     next();
   } catch (err) {

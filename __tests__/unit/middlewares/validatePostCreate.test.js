@@ -34,6 +34,4 @@ describe('validatePostCreate Middleware', () => {
     expect(mockRes.status).toHaveBeenCalledWith(400);
     expect(mockRes.json).toHaveBeenCalledWith({ error: 'Tiêu đề không hợp lệ' });
   });
-
-  // Add more test cases for other validation scenarios
 });
