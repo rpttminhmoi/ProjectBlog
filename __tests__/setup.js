@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 global.console = {
   log: jest.fn(),
   error: jest.fn(),
@@ -5,6 +6,10 @@ global.console = {
   info: jest.fn()
 };
 
+=======
+
+// Mock the database module
+>>>>>>> 3829e9d2340f52090b1ef481d3f0c672b13d7429
 jest.mock('../db', () => ({
   any: jest.fn(),
   one: jest.fn(),
